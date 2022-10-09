@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dotnetrpg.Data;
 
@@ -11,9 +12,10 @@ using dotnetrpg.Data;
 namespace dotnetrpg.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221009194802_UserModel")]
+    partial class UserModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,12 +48,7 @@ namespace dotnetrpg.Migrations
                     b.Property<int>("rpgClass")
                         .HasColumnType("int");
 
-                    b.Property<int?>("userOwnerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("userOwnerId");
 
                     b.ToTable("Characters");
                 });
@@ -79,20 +76,6 @@ namespace dotnetrpg.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("dotnetrpg.Models.Character", b =>
-                {
-                    b.HasOne("dotnetrpg.Models.User", "userOwner")
-                        .WithMany("Characters")
-                        .HasForeignKey("userOwnerId");
-
-                    b.Navigation("userOwner");
-                });
-
-            modelBuilder.Entity("dotnetrpg.Models.User", b =>
-                {
-                    b.Navigation("Characters");
                 });
 #pragma warning restore 612, 618
         }

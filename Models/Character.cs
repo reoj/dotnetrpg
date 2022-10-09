@@ -13,5 +13,6 @@ namespace dotnetrpg.Models
         public int Strenght { get; set; } = 100;
         public int Intelligence { get; set; } = 100;
         public RpgClass rpgClass { get; set; } = RpgClass.Knight;
+        public User? userOwner { get; set; }
     }
 }
