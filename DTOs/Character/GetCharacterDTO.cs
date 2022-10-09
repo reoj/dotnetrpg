@@ -10,8 +10,8 @@ namespace dotnetrpg.DTOs.Character
         public int Id { get; set; }
         public String Name { get; set; } = "Alpha";
         public int HitPoints { get; set; } = 100;
-        public int Strenght { get; set; } = 10;
-        public int Intelligence { get; set; }
+        public int Strenght { get; set; } = 100;
+        public int Intelligence { get; set; } = 100;
         public RpgClass rpgClass { get; set; } = RpgClass.Knight;
     }
 }

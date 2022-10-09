@@ -24,7 +24,8 @@ namespace dotnetrpg.Models
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<GetCharacterDTO>>> GetSingle(int id)
         {
-            return Ok(await _characterService.GetCharacterByID(id));
+            var response = await _characterService.GetCharacterByID(id);
+            return response.Data != null ? Ok(response) : NotFound(response);
         }
 
         [HttpPost]
@@ -39,12 +40,7 @@ namespace dotnetrpg.Models
         (UpdateCharacterDTO updatedCharacter)
         {
             var response = await _characterService.UpdateCharacter(updatedCharacter);
-            if (response.Data != null)
-            {
-                return Ok(response);
-            }else{
-                return NotFound(response);
-            }            
+            return response.Data is null ? NotFound(response): Ok(response);
         }
 
         [HttpDelete("{id}")]
