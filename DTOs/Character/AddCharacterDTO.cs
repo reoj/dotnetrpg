@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace dotnetrpg.DTOs.Character
 {
+    /// <summary>
+    /// Includes the parameters from the Character class that are relevant for the Add operation
+    /// </summary>
     public class AddCharacterDTO
     {
         public String Name { get; set; } = "Alpha";

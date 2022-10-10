@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace dotnetrpg.Models
 {
+    /// <summary>
+    /// Represents an in-game character
+    /// </summary>
     public class Character
     {
         public int Id { get; set; }

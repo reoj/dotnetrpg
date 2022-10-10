@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace dotnetrpg.Models
 {
+    /// <summary>
+    /// Representation of the user model
+    /// </summary>
     public class User
     {
         public int Id { get; set; }

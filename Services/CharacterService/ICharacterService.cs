@@ -6,6 +6,9 @@ using dotnetrpg.DTOs.Character;
 
 namespace dotnetrpg.Services.CharacterService
 {
+    /// <summary>
+    /// Contract to set the basic operations of the Character Service
+    /// </summary>
     public interface ICharacterService
     {
         Task<ServiceResponse<List<GetCharacterDTO>>> GetAllCharacters();

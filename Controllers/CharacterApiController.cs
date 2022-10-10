@@ -5,11 +5,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetrpg.Models
 {
+    /// <summary>
+    /// Controller for the in-game characters
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class CharacterController : ControllerBase
     {
+        /// <summary>
+        /// Instance of the Characters Service
+        /// </summary>
         private readonly ICharacterService _characterService;
+
         public CharacterController(ICharacterService characterService)
         {
             _characterService = characterService;            

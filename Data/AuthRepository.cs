@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dotnetrpg.Data
 {
+    /// <summary>
+    /// Repository to handle the User Authentication Requests from the AuthController
+    /// </summary>
     public class AuthRepository : IAuthRepository
     {
         private readonly DataContext _context;
@@ -16,6 +19,7 @@ namespace dotnetrpg.Data
             this._context = context;            
         }
         #endregion
+        
         public async Task<ServiceResponse<string>> Login(string username, string password)
         {
             var response = new ServiceResponse<string>();

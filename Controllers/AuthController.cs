@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetrpg.Controllers
 {
+    /// <summary>
+    /// Controller for the User Authentication
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class AuthController:ControllerBase
@@ -43,5 +46,6 @@ namespace dotnetrpg.Controllers
             // Return Response
             return response.SuccessFlag ? Ok(response) : BadRequest(response);
         }
+    
     }
 }
