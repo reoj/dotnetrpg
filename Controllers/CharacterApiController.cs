@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Claims;
 using dotnetrpg.DTOs.Character;
 using dotnetrpg.Services.CharacterService;
 using Microsoft.AspNetCore.Authorization;

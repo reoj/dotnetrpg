@@ -33,12 +33,21 @@ builder.Services.AddSwaggerGen( // Enabling the authentication for Swagger UI
         cnfg.SwaggerDoc( "v1", new OpenApiInfo
             {
                 Title = "RPG Test API",
-                Description = "An API to learn the basics of .NET, JWT and OpenAPI",
+                Description = "An API to learn the basics of .NET, JWT and OpenAPI",                
+                Contact = new OpenApiContact
+                {
+                    Name = "Jaciel Israel Reséndiz Ochoa",
+                    Email = "jresendizochoa@deloitte.com",
+                    Url = new Uri("https://github.com/reoj")
+                },
                 Version = "v1"
             }    
         );
     }
 );
+
+builder.Services.AddHttpContextAccessor(); // Necessary to inyect HTTP context
+
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ICharacterService, CharacterService>(); // Character Service
 builder.Services.AddScoped<IAuthRepository, AuthRepository>(); //Auth. User Service. in Data

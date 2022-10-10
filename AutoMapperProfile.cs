@@ -13,6 +13,9 @@ namespace dotnetrpg
     /// </summary>
     public class AutoMapperProfile : Profile
     {
+         /// <summary>
+        /// Initializes the maps to be Mapped
+        /// </summary>
         public AutoMapperProfile()
         {
             CreateMap<Character, GetCharacterDTO>();

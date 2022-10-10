@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using AutoMapper;
 using dotnetrpg.Data;
 using dotnetrpg.DTOs.Character;
@@ -15,14 +16,16 @@ namespace dotnetrpg.Services.CharacterService
     {
         #region Fields
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContext;
         public DataContext _context;
         #endregion
 
         #region Constructor
-        public CharacterService(IMapper mapper, DataContext context)
+        public CharacterService(IMapper mapper, DataContext context, IHttpContextAccessor httpContext)
         {
             _context = context;
-            _mapper = mapper;         
+            _mapper = mapper;
+            _httpContext = httpContext;      
         }
         #endregion
 
@@ -83,7 +86,9 @@ namespace dotnetrpg.Services.CharacterService
 
             // Attempt to get Character information from the DB
             try {
-                var dbCharacters = await _context.Characters.ToListAsync();
+                var dbCharacters = await _context.Characters
+                    .Where(ch => ch.userOwner.Id == GetUserID())
+                    .ToListAsync();
 
                 response.Data = dbCharacters.Select
                     (item => _mapper.Map<GetCharacterDTO>(item)).ToList();
@@ -153,5 +158,9 @@ namespace dotnetrpg.Services.CharacterService
             return response;
         }
         
+        #region Private Methods
+        private int GetUserID() => int.Parse(_httpContext.HttpContext.User
+            .FindFirstValue(ClaimTypes.NameIdentifier));
+        #endregion
     }
 }
