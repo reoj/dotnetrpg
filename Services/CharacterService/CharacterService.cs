@@ -152,5 +152,6 @@ namespace dotnetrpg.Services.CharacterService
             }
             return response;
         }
+        
     }
 }
