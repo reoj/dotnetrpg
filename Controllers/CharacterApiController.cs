@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using dotnetrpg.DTOs.Character;
 using dotnetrpg.Services.CharacterService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetrpg.Models
@@ -8,8 +9,9 @@ namespace dotnetrpg.Models
     /// <summary>
     /// Controller for the in-game characters
     /// </summary>
-    [ApiController]
-    [Route("api/[controller]")]
+    [Authorize]                 //Ask for Authorization
+    [ApiController]             //Mark as Controller
+    [Route("api/[controller]")] // Route
     public class CharacterController : ControllerBase
     {
         /// <summary>
