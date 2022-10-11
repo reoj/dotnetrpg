@@ -14,6 +14,5 @@ namespace dotnetrpg.Models
         public T? Data { get; set; }
         public bool SuccessFlag { get; set; } = true;
         public string Message { get; set; } = string.Empty;
-        
     }
 }

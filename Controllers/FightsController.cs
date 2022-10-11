@@ -17,10 +17,23 @@ namespace dotnetrpg.Controllers
         #endregion
 
         #region HTTP Methods
-        [HttpPost]
+        [HttpPost("Weapon")]
         public async Task<ActionResult<ServiceResponse<ResultAttackDTO>>> WeaponAttack(WeaponAttackDTO attack)
         {
             var response = await _fService.WeaponAttack(attack);
+            return response.SuccessFlag ? Ok(response) : BadRequest(response);
+        }
+        [HttpPost("Skill")]
+        public async Task<ActionResult<ServiceResponse<ResultAttackDTO>>> SkillAttack(SkillAttackDTO attack)
+        {
+            var response = await _fService.SkillAttack(attack);
+            return response.SuccessFlag ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<ResultAttackDTO>>> Fight (FightRequestDTO fightRequest)
+        {
+            var response = await _fService.Fight(fightRequest);
             return response.SuccessFlag ? Ok(response) : BadRequest(response);
         }
         #endregion
