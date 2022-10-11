@@ -37,7 +37,7 @@ namespace dotnetrpg.Services.WeaponService
                 if(_httpAccess.HttpContext != null)
                 {
                     int fromHTTPAcc = int.Parse(_httpAccess.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-                    var character =await _context.Characters
+                    var character = await _context.Characters
                         .FirstOrDefaultAsync(c => c.userOwner != null
                             && c.Id == nwWeapon.CharacterId
                             && c.userOwner.Id == fromHTTPAcc);                    
@@ -50,16 +50,16 @@ namespace dotnetrpg.Services.WeaponService
                         };
 
                         _context.Weapons.Add(weapon);
-                        await _context.SaveChangesAsync();
-
-                        response.SuccessFlag = true;
-                        response.Message = "Operation concluded correctly";
+                        await _context.SaveChangesAsync();                        
                     }
                     else
                     {
                         throw new NullReferenceException("No Character was found to bear that Weapon");
-                    }                  
+                    } 
                     
+                    response.Data = _mapper.Map<GetCharacterDTO>(character);
+                    response.SuccessFlag = true;
+                    response.Message = "Operation concluded correctly";
                 }
             }
             catch (Exception err)

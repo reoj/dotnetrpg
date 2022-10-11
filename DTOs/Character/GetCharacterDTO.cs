@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using dotnetrpg.DTOs.Weapon;
 
 namespace dotnetrpg.DTOs.Character
 {
@@ -17,5 +14,6 @@ namespace dotnetrpg.DTOs.Character
         public int Strenght { get; set; } = 100;
         public int Intelligence { get; set; } = 100;
         public RpgClass rpgClass { get; set; } = RpgClass.Knight;
+        public GetWeaponDTO CurrentWeapon { get; set; } 
     }
 }

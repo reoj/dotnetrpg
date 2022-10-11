@@ -8,7 +8,7 @@ namespace dotnetrpg.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[contoller]")]
+    [Route("[controller]")]
     public class WeaponController : ControllerBase
     {
         private readonly IWeaponService _weaponService;

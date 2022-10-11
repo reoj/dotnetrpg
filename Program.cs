@@ -52,7 +52,7 @@ builder.Services.AddHttpContextAccessor(); // Necessary to inyect HTTP context
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ICharacterService, CharacterService>(); // Character Service
 builder.Services.AddScoped<IAuthRepository, AuthRepository>(); //Auth. User Service. in Data
-builder.Services.AddScoped<IWeaponService, WeaponService>(); // Weapon Service
+
 // JWT Authentication Scheme
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -65,7 +65,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = false,
             ValidateAudience = false
         }); 
-
+builder.Services.AddScoped<IWeaponService, WeaponService>(); // Weapon Service
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
