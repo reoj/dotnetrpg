@@ -1,6 +1,7 @@
 global using dotnetrpg.Models; //Models are available troughout the WebApi
 using dotnetrpg.Data;   //Necesary to add the Data Service from Entity Framework
 using dotnetrpg.Services.CharacterService; // Necessary to add the Scoped Character Service
+using dotnetrpg.Services.WeaponService;
 using Microsoft.AspNetCore.Authentication.JwtBearer; //Necessary to add JWT Auth Bearer Scheme
 using Microsoft.EntityFrameworkCore; //Necessary to add the Scoped User Authentication Serv.
 using Microsoft.IdentityModel.Tokens; // Necessary to add the JWT Bearer token parameters
@@ -51,6 +52,7 @@ builder.Services.AddHttpContextAccessor(); // Necessary to inyect HTTP context
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ICharacterService, CharacterService>(); // Character Service
 builder.Services.AddScoped<IAuthRepository, AuthRepository>(); //Auth. User Service. in Data
+builder.Services.AddScoped<IWeaponService, WeaponService>(); // Weapon Service
 // JWT Authentication Scheme
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
