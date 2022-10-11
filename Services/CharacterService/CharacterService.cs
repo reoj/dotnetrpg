@@ -53,6 +53,42 @@ namespace dotnetrpg.Services.CharacterService
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<GetCharacterDTO>> AddCharacterSkill(AddCharacterSkillDTO nwCharacterSkill)
+        {
+            var response = new ServiceResponse<GetCharacterDTO>();
+            try
+            {
+                var character = await _context.Characters
+                    .Include(c => c.CurrentWeapon)
+                    .Include(c => c.Skills)
+                    .FirstOrDefaultAsync(c => c.Id == nwCharacterSkill.CharacterID && c.userOwner != null &&
+                    c.userOwner.Id == GetUserID());
+
+                    var skll = await _context.Skills.FirstOrDefaultAsync
+                            (sk => sk.Id == nwCharacterSkill.SkillID);
+
+                    if (character is null )
+                    {
+                        throw new NullReferenceException("Couldn't find the character requested");
+                    }
+                    if (skll is null)
+                    {
+                        throw new NullReferenceException("Couldn't find the skill requested");
+                    }
+
+                    character.Skills.Add(skll);
+
+                    await _context.SaveChangesAsync();
+                    response.Data = _mapper.Map<GetCharacterDTO>(character);
+            }
+            catch (Exception err)
+            {
+                response.SuccessFlag = false;
+                response.Message = err.Message.ToString();
+            }
+            return response;
+        }
+
         public async Task<ServiceResponse<List<GetCharacterDTO>>> DeleteCharacter(int id)
         {
             // Prepare the Response object to be returned
@@ -103,6 +139,8 @@ namespace dotnetrpg.Services.CharacterService
             // Attempt to get Character information from the DB
             try {
                 var dbCharacters = await _context.Characters
+                    .Include(c => c.CurrentWeapon)
+                    .Include(c => c.Skills)
                     .Where(ch => ch.userOwner != null && ch.userOwner.Id == GetUserID())
                     .ToListAsync();
 
@@ -128,6 +166,8 @@ namespace dotnetrpg.Services.CharacterService
             try {
                 var dbCharacter = 
                     await _context.Characters
+                        .Include(c => c.CurrentWeapon)
+                        .Include(c => c.Skills)
                         .FirstOrDefaultAsync(item => item.Id == id && item.Id == GetUserID());
                 if (dbCharacter != null)
                 {

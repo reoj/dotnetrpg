@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dotnetrpg.Data;
 
@@ -11,9 +12,10 @@ using dotnetrpg.Data;
 namespace dotnetrpg.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221011193731_SkillSeeding")]
+    partial class SkillSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,12 +47,6 @@ namespace dotnetrpg.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Defeats")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Fights")
-                        .HasColumnType("int");
-
                     b.Property<int>("HitPoints")
                         .HasColumnType("int");
 
@@ -62,9 +58,6 @@ namespace dotnetrpg.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Strenght")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Victories")
                         .HasColumnType("int");
 
                     b.Property<int>("rpgClass")

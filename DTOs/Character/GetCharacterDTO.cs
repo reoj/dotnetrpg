@@ -1,3 +1,4 @@
+using dotnetrpg.DTOs.Skill;
 using dotnetrpg.DTOs.Weapon;
 
 namespace dotnetrpg.DTOs.Character
@@ -15,5 +16,9 @@ namespace dotnetrpg.DTOs.Character
         public int Intelligence { get; set; } = 100;
         public RpgClass rpgClass { get; set; } = RpgClass.Knight;
         public GetWeaponDTO CurrentWeapon { get; set; } 
+        public List<GetSkillDTO> Skills { get; set; }
+        public int Fights { get; set; }
+        public int Victories { get; set; }
+        public int Defeats { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace dotnetrpg.Models
         /// </summary>
         private readonly ICharacterService _characterService;
 
+        #region HTTP Methods
         public CharacterController(ICharacterService characterService)
         {
             _characterService = characterService;            
@@ -44,6 +45,13 @@ namespace dotnetrpg.Models
         {
             return Ok(await _characterService.AddCharacter(newChr));
         }
+        
+        [HttpPost("Skill")]
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDTO>>>> AddSkill(AddCharacterSkillDTO nwChSkill)
+        {
+            var response = await _characterService.AddCharacterSkill(nwChSkill);
+            return response.SuccessFlag ? Ok(response) : BadRequest(response);
+        }
 
         [HttpPut]
         public async Task<ActionResult<ServiceResponse<GetCharacterDTO>>> UpdateCharacter
@@ -65,6 +73,7 @@ namespace dotnetrpg.Models
                 return NotFound(response);
             } 
         }
+        #endregion
     }
 
 }
