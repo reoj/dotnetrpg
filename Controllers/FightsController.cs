@@ -1,3 +1,4 @@
+using dotnetrpg.DTOs.Fights;
 using dotnetrpg.Services.FightService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,12 @@ namespace dotnetrpg.Controllers
         #endregion
 
         #region HTTP Methods
-
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<ResultAttackDTO>>> WeaponAttack(WeaponAttackDTO attack)
+        {
+            var response = await _fService.WeaponAttack(attack);
+            return response.SuccessFlag ? Ok(response) : BadRequest(response);
+        }
         #endregion
     }
 }
