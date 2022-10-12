@@ -1,3 +1,4 @@
+using AutoMapper;
 using dotnetrpg.Data;
 using dotnetrpg.DTOs.Fights;
 using Microsoft.EntityFrameworkCore;
@@ -6,11 +7,17 @@ namespace dotnetrpg.Services.FightService
 {
     public class FightService:IFightService
     {
+        #region Private Fields
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
+        
+        #endregion
         #region Constructor
-        public FightService(DataContext context)
+        public FightService(DataContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
+            
         }
         #endregion
 
@@ -183,6 +190,20 @@ namespace dotnetrpg.Services.FightService
             return response;
         }
         
+         public async Task<ServiceResponse<List<HighScoreDTO>>> GetHighScores()
+        {
+            var response = new ServiceResponse<List<HighScoreDTO>>();
+
+            var participants = await _context.Characters
+                .Where(c => c.Fights > 0)
+                .OrderByDescending(c => c.Victories)
+                .ThenBy(c => c.Defeats)
+                .ToListAsync();
+            
+            response.Data = participants.Select(c=>_mapper.Map<HighScoreDTO>(c)).ToList();
+            return response;
+        }
+
         #endregion
 
         #region Private Methods
@@ -225,7 +246,9 @@ namespace dotnetrpg.Services.FightService
                 $"{attacker.Name} couldn't use {attacker.CurrentWeapon.Name} effectively";
                 }
             }
-        }  
+        }
+
+       
         #endregion
     }
 }

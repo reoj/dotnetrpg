@@ -7,6 +7,7 @@ namespace dotnetrpg.Services.FightService
         Task<ServiceResponse<ResultAttackDTO>> WeaponAttack (WeaponAttackDTO attack);
         Task<ServiceResponse<ResultAttackDTO>> SkillAttack (SkillAttackDTO attack);
         Task<ServiceResponse<FightResultDTO>> Fight (FightRequestDTO attack);
+        Task<ServiceResponse<List<HighScoreDTO>>> GetHighScores ();
 
     }
 }

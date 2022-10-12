@@ -36,6 +36,13 @@ namespace dotnetrpg.Controllers
             var response = await _fService.Fight(fightRequest);
             return response.SuccessFlag ? Ok(response) : BadRequest(response);
         }
+
+        [HttpPost("High Scores")]
+        public async Task<ActionResult<ServiceResponse<List<HighScoreDTO>>>> GetHighScores ()
+        {
+            var response = await _fService.GetHighScores();
+            return response.SuccessFlag ? Ok(response) : BadRequest(response);
+        }
         #endregion
     }
 }
