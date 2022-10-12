@@ -160,7 +160,7 @@ namespace dotnetrpg.Services.FightService
                             attacker.Victories++;
                             opponent.Defeats++;
                             response.Data.Log.Add
-                                ($"{opponent.Name} defeated by {attacker.Name}");
+                                ($"{opponent.Name} was defeated by {attacker.Name}");
                             break;
                         }
                     }
@@ -211,8 +211,19 @@ namespace dotnetrpg.Services.FightService
             if (dmg > 0)
             {
                 msg = 
-                $"{attacker.Name} dealed{dmg} damage to {opponent.Name} with {attacker.CurrentWeapon.Name}";
+                $"{attacker.Name} dealed {dmg} damage to {opponent.Name} with {attacker.CurrentWeapon.Name}";
                 opponent.HitPoints -= dmg;
+            }else{
+                if (attacker.CurrentWeapon.Name == "")
+                {
+                    msg = 
+                    $"{attacker.Name} was disarmed";
+                }
+                else
+                {
+                msg = 
+                $"{attacker.Name} couldn't use {attacker.CurrentWeapon.Name} effectively";
+                }
             }
         }  
         #endregion
