@@ -37,7 +37,8 @@ namespace dotnetrpg.Data
                 response.SuccessFlag = false;
                 response.Message = "Not a valid username";
             }
-            else if(!VerifyPassword(password, user.PasswordHash, user.PasswordSalt))
+            else if( user.PasswordHash != null && user.PasswordSalt != null &&
+                !(VerifyPassword(password, user.PasswordHash, user.PasswordSalt)))
             {
                 // Password and username don't match
                 response.SuccessFlag = false;

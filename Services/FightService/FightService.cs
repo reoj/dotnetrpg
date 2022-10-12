@@ -29,22 +29,19 @@ namespace dotnetrpg.Services.FightService
                     .FirstOrDefaultAsync(ch => ch.Id == attack.OponentID);
                 if (attacker != null && opponent != null)
                 {
-                    int dmg = attacker.CurrentWeapon.Damage + (new Random().Next(5,attacker.Strenght));
-                    dmg -= new Random().Next(0,opponent.Strenght);
+                    string msg;
+                    int dmg;
+                    DoWeaponAttack(attacker, opponent, out msg, out dmg);
 
-                    
-
-                    if (dmg > 0)
+                    response.Message = msg;
+                    if (opponent.HitPoints == 0)
                     {
-                        response.Message = $"{attacker.Name} dealed{dmg} damage to {opponent.Name}";
-                        opponent.HitPoints -= dmg;
-                    }
-                    if(opponent.HitPoints == 0){
                         response.Message = $"{opponent.Name} defeated";
                     }
 
                     await _context.SaveChangesAsync();
-                    var attRs = new ResultAttackDTO{
+                    var attRs = new ResultAttackDTO
+                    {
                         AttackerName = attacker.Name,
                         OpponentName = opponent.Name,
                         AttackerHP = attacker.HitPoints,
@@ -52,7 +49,8 @@ namespace dotnetrpg.Services.FightService
                         Damage = dmg
                     };
                     response.Data = attRs;
-                }else
+                }
+                else
                 {
                     throw new NullReferenceException("Non existant-character");
                 }
@@ -81,28 +79,24 @@ namespace dotnetrpg.Services.FightService
                 
                 if (attacker != null && opponent != null)
                 {
+                    string msg = string.Empty;
                     var sk = attacker.Skills.FirstOrDefault(s => s.Id == attack.SkillId);
                     if (sk is null)
                     {
                         throw new Exception($"{attacker.Name} doesn't know that skill");
                     }
-                    int dmg = attacker.CurrentWeapon.Damage + (new Random().Next(5,attacker.Intelligence));
-                    dmg -= new Random().Next(0,opponent.Strenght);
+                    int dmg;
+                    DoSkillAttack(attacker, sk, opponent, out msg, out dmg);
+                    response.Message = msg;
 
-                    
-                    if (dmg > 0)
+                    if (opponent.HitPoints == 0)
                     {
-                        response.Message = $"{attacker.Name} dealed {dmg} damage to {opponent.Name}";
-                        opponent.HitPoints -= dmg;
-                    }else{
-                        response.Message = $"{opponent.Name} defelcted the attack";
-                    }
-                    if(opponent.HitPoints == 0){
                         response.Message = $"{opponent.Name} defeated";
                     }
 
                     await _context.SaveChangesAsync();
-                    var attRs = new ResultAttackDTO{
+                    var attRs = new ResultAttackDTO
+                    {
                         AttackerName = attacker.Name,
                         OpponentName = opponent.Name,
                         AttackerHP = attacker.HitPoints,
@@ -110,7 +104,9 @@ namespace dotnetrpg.Services.FightService
                         Damage = dmg
                     };
                     response.Data = attRs;
-                }else{
+                }
+                else
+                {
                     throw new NullReferenceException("Non existant-character");
                 }
             }
@@ -137,13 +133,47 @@ namespace dotnetrpg.Services.FightService
                     .ToListAsync();
                 bool defeated = false;
                 while(!defeated){
-                    foreach (var attck in participants)
+                    foreach (var attacker in participants)
                     {
-                        var opponents = participants.Where(c => c.Id != attck.Id).ToList();
+                        var opponents = participants.Where(c => c.Id != attacker.Id).ToList();
                         var opponent = opponents[new Random().Next(opponents.Count)];
-                        //TODO: compleate fight logic
+
+                        int dmg;
+                        bool useWeapon = new Random().Next(2) == 0;
+                        var msg = string.Empty;
+
+                        if (useWeapon) // Code for using weapon
+                        {
+                            DoWeaponAttack(attacker,opponent,out msg,out dmg);
+                            
+                        }else{ //Use Skill
+                            
+                            var skill = attacker.Skills[new Random().Next(attacker.Skills.Count)];
+                            DoSkillAttack(attacker,skill,opponent,out msg, out dmg);      
+                        }
+                        
+                        response.Data.Log.Add(msg);
+
+                        if(opponent.HitPoints <= 0)
+                        {
+                            defeated = true;
+                            attacker.Victories++;
+                            opponent.Defeats++;
+                            response.Data.Log.Add
+                                ($"{opponent.Name} defeated by {attacker.Name}");
+                            break;
+                        }
                     }
                 }
+
+                participants.ForEach( ch => 
+                {
+                    ch.Fights++;
+                    ch.HitPoints = 100;
+                });
+
+                await _context.SaveChangesAsync();
+                
             }
             catch (Exception err)
             {
@@ -152,8 +182,39 @@ namespace dotnetrpg.Services.FightService
             }
             return response;
         }
+        
+        #endregion
 
+        #region Private Methods
+         private static void DoSkillAttack
+            (Character attacker, Skill skill, Character opponent, out string msg, out int dmg)
+        {
+            dmg = skill.Damage + (new Random().Next(5, attacker.Intelligence));
+            dmg -= new Random().Next(0, opponent.Strenght);
+            if (dmg > 0)
+            {
+                msg = $"{attacker.Name} dealed {dmg} damage to {opponent.Name} using {skill.Name}";
+                opponent.HitPoints -= dmg;
+            }
+            else
+            {
+                msg = $"{opponent.Name} defelcted the attack";
+            }
+        }   
+        private static void DoWeaponAttack
+            (Character attacker, Character opponent, out string msg, out int dmg)
+        {
+            msg = string.Empty;
+            dmg = attacker.CurrentWeapon.Damage + (new Random().Next(5, attacker.Strenght));
+            dmg -= new Random().Next(0, opponent.Strenght);
 
+            if (dmg > 0)
+            {
+                msg = 
+                $"{attacker.Name} dealed{dmg} damage to {opponent.Name} with {attacker.CurrentWeapon.Name}";
+                opponent.HitPoints -= dmg;
+            }
+        }  
         #endregion
     }
 }
