@@ -21,6 +21,10 @@ namespace dotnetrpg.Models
         private readonly ICharacterService _characterService;
 
         #region HTTP Methods
+        /// <summary>
+        /// Constructor for the Character Controller
+        /// </summary>
+        /// <param name="characterService">An instance of the Character service to control</param>
         public CharacterController(ICharacterService characterService)
         {
             _characterService = characterService;            
